@@ -32,3 +32,13 @@ class Robot(ABC):
     def perform_task(self):
         #Perform the task assigned to the robot.
         pass
+
+
+class CleaningRobot(Robot):
+    def __init__(self, name, battery=100, dust_capacity=10):
+        super().__init__(name, battery)
+        self.dust_capacity = dust_capacity
+
+    def perform_task(self):
+        self.battery -= 15
+        return f"{self.name} is cleaning the area."
