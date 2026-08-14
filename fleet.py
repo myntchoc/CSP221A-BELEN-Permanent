@@ -93,6 +93,7 @@ class DroneRobot(Robot):
 
 
 def fleet_report(robots):
+    print("=== Fleet Status ===")
     for robot in robots:
         print(str(robot))
 
