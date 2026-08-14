@@ -1,5 +1,3 @@
-#Fleet management system
-
 from abc import ABC, abstractmethod
 from functools import wraps
 import logging
@@ -32,8 +30,6 @@ class InsufficientBatteryError(Exception):
 
 
 class Robot(ABC):
-    #Base class for all robots in the fleet
-
     manufacturer = "Fleet Robotics"
     population = 0
 
@@ -67,7 +63,6 @@ class Robot(ABC):
 
     @abstractmethod
     def perform_task(self):
-        #Perform the task assigned to the robot.
         pass
 
 
