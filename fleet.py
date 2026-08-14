@@ -1,6 +1,22 @@
 #Fleet management system
 
 from abc import ABC, abstractmethod
+from functools import wraps
+import logging
+
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+
+def log_action(method):
+    @wraps(method)
+    def wrapper(*args, **kwargs):
+        logging.info("Starting %s", method.__name__)
+        result = method(*args, **kwargs)
+        logging.info("Finished %s", method.__name__)
+        return result
+
+    return wrapper
 
 
 class InsufficientBatteryError(Exception):
@@ -66,6 +82,7 @@ class DroneRobot(Robot):
         super().__init__(name, battery)
         self.max_altitude = max_altitude
 
+    @log_action
     def perform_task(self):
         self.use_battery(10)
         return f"{self.name} is surveying the area from the air."
@@ -74,3 +91,14 @@ class DroneRobot(Robot):
 def fleet_report(robots):
     for robot in robots:
         print(str(robot))
+
+
+def run_task_safely(robot, **kwargs):
+    try:
+        task_result = robot.perform_task(**kwargs)
+    except InsufficientBatteryError as error:
+        logging.error(error)
+    else:
+        print(task_result)
+    finally:
+        print(f"{robot.name} current battery: {robot.battery}%")
