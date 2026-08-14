@@ -69,3 +69,8 @@ class DroneRobot(Robot):
     def perform_task(self):
         self.use_battery(10)
         return f"{self.name} is surveying the area from the air."
+
+
+def fleet_report(robots):
+    for robot in robots:
+        print(str(robot))
