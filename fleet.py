@@ -42,6 +42,10 @@ class Robot(ABC):
         self.battery = battery
         Robot.population += 1
 
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
+
     @property
     def battery(self):
         return self._battery
