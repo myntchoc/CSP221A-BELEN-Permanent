@@ -3,6 +3,18 @@
 from abc import ABC, abstractmethod
 
 
+class InsufficientBatteryError(Exception):
+    def __init__(self, robot_name, required, available):
+        self.robot_name = robot_name
+        self.required = required
+        self.available = available
+        message = (
+            f"{robot_name} needs {required}% battery for this task "
+            f"but only has {available}%."
+        )
+        super().__init__(message)
+
+
 class Robot(ABC):
     #Base class for all robots in the fleet
 
@@ -28,6 +40,11 @@ class Robot(ABC):
     def __repr__(self):
         return f"{type(self).__name__}(name={self.name!r}, battery={self.battery})"
 
+    def use_battery(self, amount):
+        if self.battery < amount:
+            raise InsufficientBatteryError(self.name, amount, self.battery)
+        self.battery -= amount
+
     @abstractmethod
     def perform_task(self):
         #Perform the task assigned to the robot.
@@ -40,7 +57,7 @@ class CleaningRobot(Robot):
         self.dust_capacity = dust_capacity
 
     def perform_task(self):
-        self.battery -= 15
+        self.use_battery(15)
         return f"{self.name} is cleaning the area."
 
 
@@ -50,5 +67,5 @@ class DroneRobot(Robot):
         self.max_altitude = max_altitude
 
     def perform_task(self):
-        self.battery -= 10
+        self.use_battery(10)
         return f"{self.name} is surveying the area from the air."
