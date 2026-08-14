@@ -106,3 +106,28 @@ def run_task_safely(robot, **kwargs):
         print(task_result)
     finally:
         print(f"{robot.name} current battery: {robot.battery}%")
+
+
+class SharedListExample:
+    some_list = []
+
+
+class IndependentListExample:
+    def __init__(self):
+        self.some_list = []
+
+
+if __name__ == "__main__":
+    print("Mutable class attribute demonstration:")
+
+    first_shared = SharedListExample()
+    second_shared = SharedListExample()
+    first_shared.some_list.append("changed by first object")
+    print("Shared list:", first_shared.some_list)
+    print("Second object sees:", second_shared.some_list)
+
+    first_independent = IndependentListExample()
+    second_independent = IndependentListExample()
+    first_independent.some_list.append("changed by first object")
+    print("Independent first list:", first_independent.some_list)
+    print("Independent second list:", second_independent.some_list)
